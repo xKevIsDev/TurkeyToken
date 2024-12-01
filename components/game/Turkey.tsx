@@ -68,12 +68,11 @@ export function Turkey({ sprite, onCatch, onEscape, characterPosition }: TurkeyP
       setHasDecreasedToken(true);
       setCaught(true);
       playSound('catch', 0.5);
+      setShowExplosion(true);
 
       setTimeout(() => {
-        setShowExplosion(true);
-      }, 100);
-
-      onCatch(sprite.id);
+        onCatch(sprite.id);
+      }, 1000);
     }
   }, [caught, hasDecreasedToken, position, characterPosition, addScore, decreaseToken, onCatch, sprite.id]);
 
