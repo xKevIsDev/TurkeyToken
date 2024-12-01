@@ -6,7 +6,7 @@ import { Analytics } from "@vercel/analytics/react"
 const inter = Inter({ subsets: ['latin'] });
 
 // Update these values with your actual deployment URL and image paths
-const baseUrl = 'https://turkey-tokens.vercel.app'; // Replace with your actual URL
+const baseUrl = 'https://turkey-token.vercel.app'; // Replace with your actual URL
 
 export const metadata: Metadata = {
   title: 'Turkey Tokens',
