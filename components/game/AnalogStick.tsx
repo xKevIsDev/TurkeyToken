@@ -10,8 +10,8 @@ interface AnalogStickProps {
 export function AnalogStick({ onMove, className = '' }: AnalogStickProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const baseSize = 140;
-  const stickSize = 60;
+  const baseSize = 120;
+  const stickSize = 40;
   const maxDistance = baseSize / 2 - stickSize / 2;
 
   const handleDrag = useCallback((event: any, info: { offset: Position }) => {
@@ -60,12 +60,6 @@ export function AnalogStick({ onMove, className = '' }: AnalogStickProps) {
           height: baseSize,
         }}
       />
-      
-      {/* Direction indicators */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-1 h-1/2 bg-blue-500/20 rounded-full transform -translate-y-2" />
-        <div className="h-1 w-1/2 bg-blue-500/20 rounded-full transform -translate-x-2" />
-      </div>
       
       {/* Stick */}
       <motion.div
