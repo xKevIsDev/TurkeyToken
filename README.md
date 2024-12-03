@@ -1,41 +1,41 @@
-# Turkey Tokens 🦃
+# Byte Blitz 🖥️
 
-![Turkey Tokens Snapshot](/public/screenshot.png)
+![Byte Blitz Screenshot](/public/screenshot.png)
 
-A fast-paced browser game where you catch turkeys to collect tokens and advance through increasingly challenging levels.
+A fast-paced browser game where you collect code fragments to prevent system memory leaks. Built with Next.js and Framer Motion.
 
 ## 🎮 Gameplay
 
-- Use your mouse to move the character around the screen
-- Catch turkeys before they escape
-- Each caught turkey gives you points and tokens
-- Collect enough tokens to advance to the next level
-- Don't let 5 turkeys escape or it's game over!
+- Use your mouse to control the system cursor
+- Collect code fragments before they escape memory
+- Each fragment collected increases your byte count
+- Collect enough bytes to compile and advance levels
+- Don't let 5 fragments leak or the system crashes!
 
 ## 🔥 Features
 
-- Mouse-locked controls for smooth gameplay
+- Mouse-locked precision controls
 - Progressive difficulty system:
-  - More turkeys spawn as levels increase
-  - Turkeys move faster in higher levels
-  - Faster spawn rates in higher levels
-- Score multiplier system
-- Level progression
-- Sound effects
-- High score system
+  - More fragments spawn at higher levels
+  - Fragments move faster in higher levels
+  - Spawn rates increase with level progression
+- Processing speed multiplier system
+- Level progression with visual effects
+- Retro tech sound effects
+- Global leaderboard system
 
 ## 🎯 Game Mechanics
 
-### Difficulty Progression
-- Base number of turkeys: 5 + current level
-- Turkey speed increases with level
+### System Progression
+- Base number of fragments: 5 + current level
+- Fragment speed increases with level
 - Spawn rate increases with level (starts at 2s, decreases by 100ms per level, minimum 500ms)
 
 ### Scoring System
-- Points awarded for each caught turkey
-- Score multiplier increases with each level
-- Tokens needed for level advancement
-- Game ends if 5 turkeys escape
+- Bytes awarded for each collected fragment
+- Processing speed multiplier increases with each level
+- Bytes needed for compilation increases per level
+- System crash after 5 memory leaks
 
 ## 🛠️ Technical Stack
 
@@ -45,13 +45,14 @@ A fast-paced browser game where you catch turkeys to collect tokens and advance 
 - Tailwind CSS for styling
 - HTML5 Canvas for game rendering
 - Web Audio API for sound effects
+- Supabase for leaderboard
 
 ## 🚀 Getting Started
 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/turkey-tokens.git
+git clone https://github.com/yourusername/byte-blitz.git
 ```
 
 2. Install dependencies:
@@ -62,7 +63,14 @@ npm install
 yarn install
 ```
 
-3. Run the development server:
+3. Set up environment variables:
+
+```bash
+cp .env.example .env.local
+```
+Then add your Supabase credentials to `.env.local`
+
+4. Run the development server:
 
 ```bash
 npm run dev
@@ -70,20 +78,20 @@ npm run dev
 yarn dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ## 🎨 Customization
 
 ### Game Settings
 You can modify game settings in `lib/game/utils.ts`:
-- Turkey speed
+- Fragment speed
 - Spawn rates
 - Difficulty progression
 - Score multipliers
 
 ### Assets
-- Sprites are located in the `public/sprites` directory
 - Sound effects are in the `public/sounds` directory
+- Visual assets are in the `public/sprites` directory
 
 ## 🤝 Contributing
 
@@ -95,9 +103,11 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🙏 Acknowledgments
 
-- Turkey sprite assets
-- Sound effects
-- Game design inspiration
+- Sound effects:
+  - [freesound_community](https://pixabay.com/users/freesound_community-46691455/)
+  - [rescopicsound](https://pixabay.com/users/rescopicsound-45188866/)
+- Game design inspiration from classic arcade games
+- Built by [@KevIsDev](https://x.com/KevIsDev)
 
 ## 🐛 Known Issues
 
