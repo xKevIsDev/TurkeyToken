@@ -8,7 +8,7 @@ interface GameState {
   level: number;
   tokensToNextLevel: number;
   multiplier: number;
-  turkeysNeeded: number;
+  fragmentsNeeded: number;
   showLevelUp: boolean;
   playerName: string | null;
 }
@@ -30,7 +30,7 @@ const INITIAL_STATE: GameState = {
   level: 1,
   tokensToNextLevel: TOKENS_PER_LEVEL,
   multiplier: 1,
-  turkeysNeeded: 1,
+  fragmentsNeeded: 1,
   showLevelUp: false,
   playerName: null,
 };
@@ -48,9 +48,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const decreaseToken = () => {
     setGameState((prev) => {
-      const turkeysCaught = Math.floor(prev.score / 10);
+      const fragmentsCaught = Math.floor(prev.score / 10);
 
-      if (turkeysCaught >= prev.turkeysNeeded) {
+      if (fragmentsCaught >= prev.fragmentsNeeded) {
         const newTokensToNextLevel = prev.tokensToNextLevel - 1;
 
         if (newTokensToNextLevel <= 0) {
@@ -63,7 +63,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
             level: prev.level + 1,
             tokensToNextLevel: TOKENS_PER_LEVEL,
             multiplier: prev.multiplier + 0.2,
-            turkeysNeeded: prev.turkeysNeeded + 1,
+            fragmentsNeeded: prev.fragmentsNeeded + 1,
             showLevelUp: true,
           };
         }

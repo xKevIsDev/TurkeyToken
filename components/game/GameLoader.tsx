@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { playSound } from "@/lib/game/sounds";
 import { NameInput } from "./NameInput";
 import { useGame } from "./GameContext";
+import { ElectricText } from "@/components/ui/electric-text";
 
 export function GameLoader() {
   const [loading, setLoading] = useState(true);
@@ -16,6 +17,8 @@ export function GameLoader() {
   const [showNameInput, setShowNameInput] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const { gameState, setPlayerName } = useGame();
+
+  
 
   useEffect(() => {
     setMounted(true);
@@ -29,8 +32,7 @@ export function GameLoader() {
     // Play running sound effect once when loading starts
     useEffect(() => {
       if (loading && hasInteracted) {
-        playSound('footsteps', 0.2);
-        playSound('turkey', 0.1);
+        playSound('electric', 0.3);
       }
     }, [hasInteracted]); // Only trigger when user first interacts
 
@@ -78,19 +80,27 @@ export function GameLoader() {
   if (!hasInteracted) {
     return (
       <div 
-        className="fixed inset-0 z-50 flex items-center justify-center cursor-pointer"
+        className="fixed inset-0 z-50 flex items-center justify-center cursor-pointer bg-black p-4"
         onClick={startLoading}
       >
-        <div className="absolute inset-0 bg-black/30" />
         <motion.div
-          className="relative text-white text-center space-y-4"
+          className="relative text-center space-y-4 md:space-y-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-6xl font-bold mb-4 drop-shadow-lg">Turkey Tokens</h1>
-          <p className="text-xl drop-shadow-md font-thin animate-bounce">Dont let the turkeys escape!</p>
-          <p className="text-xl drop-shadow-md font-thin">Click anywhere to start</p>
+          <ElectricText />
+          <div className="space-y-2">
+            <p className="text-base md:text-xl text-blue-300/80 font-mono">
+              System Status: <span className="text-red-400">Memory Leak Detected</span>
+            </p>
+            <p className="text-sm md:text-lg text-blue-300/60 font-mono animate-pulse">
+              Click to Initialize System Recovery_
+            </p>
+            <a href="https://x.com/KevIsDev" className="text-sm md:text-base text-blue-300/60 font-mono">
+              Built by @KevIsDev
+            </a>
+          </div>
         </motion.div>
       </div>
     );
@@ -101,131 +111,80 @@ export function GameLoader() {
       <AnimatePresence>
         {loading && (
           <motion.div
-            className="fixed inset-0 z-50"
+            className="fixed inset-0 z-50 bg-black"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            style={{
-              backgroundImage: "url('/backgrounds/background.jpg')",
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            }}
           >
-            <div className="absolute inset-0 bg-black/30" />
-            <div className="flex flex-col items-center justify-center h-full space-y-12 relative">
-              {/* Game Title */}
+            <div className="flex flex-col items-center justify-center h-full space-y-6 md:space-y-12 relative p-4">
               <motion.div
-                className="text-6xl font-bold text-white text-center"
+                className="text-3xl md:text-6xl font-mono font-bold text-blue-400 text-center"
                 initial={{ y: -20 }}
                 animate={{ y: 0 }}
-                transition={{ duration: 0.5 }}
               >
-                Turkey Tokens
+                System Boot
               </motion.div>
 
-              {/* Loading Animation Container */}
-              <div className="relative w-96 h-32">
-                {/* Running path decoration */}
-                <div className="absolute bottom-8 w-full h-[2px] bg-white/10" />
-                
-                {/* Turkey running animation */}
-                <motion.div
-                  initial={{ x: 100 }}
-                  animate={{ x: progress * 4 }}
-                  transition={{ duration: 0.5, ease: "linear" }}
-                  className="absolute bottom-10 z-10"
-                >
-                  <motion.img
-                    src="/sprites/turkey.png"
-                    alt="Turkey"
-                    className="w-16 h-16 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
-                    animate={{
-                      y: [0, -15, 0],
-                      scaleX: -1,
-                    }}
-                    transition={{
-                      y: {
-                        duration: 0.3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }
-                    }}
-                  />
-                </motion.div>
-
-                {/* Bolt character chasing */}
-                <motion.div
-                  initial={{ x: 0 }}
-                  animate={{ x: progress * 4 - 100 }}
-                  transition={{ duration: 0.5, ease: "linear" }}
-                  className="absolute bottom-10 z-10"
-                >
-                  <motion.img
-                    src="/sprites/bolt.png"
-                    alt="Bolt"
-                    className="w-16 h-16 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
-                    animate={{
-                      y: [0, -20, 0],
-                      scale: 1.2,
-                      scaleX: -1,
-                    }}
-                    transition={{
-                      y: {
-                        duration: 0.4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }
-                    }}
-                  />
-                </motion.div>
-
-                {/* Progress Bar */}
-                <div className="absolute bottom-0 w-full px-1">
-                  <Progress 
-                    value={progress} 
-                    className="h-2 bg-white/10" 
-                  />
+              {/* Loading Progress */}
+              <div className="relative w-full max-w-[320px] md:max-w-[384px] space-y-4">
+                <div className="font-mono text-blue-300/80 text-xs md:text-sm">
+                  Initializing Memory Recovery Protocol...
+                </div>
+                <Progress 
+                  value={progress} 
+                  className="h-2 bg-blue-900/20" 
+                />
+                <div className="text-blue-400/60 font-mono text-xs md:text-sm">
+                  Loading Core Components: {progress}%
                 </div>
               </div>
 
-              {/* Loading Text */}
-              <motion.div
-                className="text-white/80 text-xl"
-                animate={{
-                  opacity: [1, 0.5, 1],
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              >
-                Loading... {progress}%
-              </motion.div>
-
               {/* Loading Tips */}
               <motion.div
-                className="text-white/60 text-sm max-w-md text-center px-4"
+                className="text-blue-300/60 font-mono text-xs md:text-sm max-w-[280px] md:max-w-md text-center px-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                Tip: Catch more turkeys to level up and increase your multiplier!
+                DEBUG: Collect language fragments to prevent system memory leaks
               </motion.div>
 
               {/* Credits Section */}
               <motion.div
-                className="absolute bottom-4 text-white/40 text-xs text-center w-full px-4"
+                className="absolute bottom-4 text-white/40 text-[10px] md:text-xs text-center w-full px-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0 }}
               >
                 <p className="mb-1">Sound Credits:</p>
                 <ul className="space-y-0.5">
-                  <li>Footsteps: <a href="https://pixabay.com/users/mathias28-27838952/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=112647">Mathias28</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=112647">Pixabay</a></li>
-                  <li>Footsteps & Catch Sound: <a href="https://pixabay.com/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=39222">freesound_community</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=39222">Pixabay</a></li>
+                  <li className="line-clamp-1 hover:line-clamp-none">Electric Loading Effect by <a href="https://pixabay.com/users/freesound_community-46691455/">freesound_community</a> from Pixabay</li>
+                  <li className="line-clamp-1 hover:line-clamp-none">Zap Effect by <a href="https://pixabay.com/users/rescopicsound-45188866/">Rescopic Sound</a> from Pixabay</li>
                 </ul>
               </motion.div>
+
+              {/* Binary Rain Effect - Reduced for mobile */}
+              {[...Array(window.innerWidth < 768 ? 10 : 20)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute text-blue-500/20 font-mono text-sm"
+                  initial={{
+                    x: Math.random() * window.innerWidth,
+                    y: -100
+                  }}
+                  animate={{
+                    y: window.innerHeight + 100,
+                    opacity: [0.2, 0.5, 0.2]
+                  }}
+                  transition={{
+                    duration: 5 + Math.random() * 5,
+                    repeat: Infinity,
+                    delay: Math.random() * 2
+                  }}
+                >
+                  {Math.random() > 0.5 ? '1' : '0'}
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         )}

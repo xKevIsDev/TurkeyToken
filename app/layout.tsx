@@ -6,28 +6,28 @@ import { Analytics } from "@vercel/analytics/react"
 const inter = Inter({ subsets: ['latin'] });
 
 // Update these values with your actual deployment URL and image paths
-const baseUrl = 'https://turkey-token.vercel.app'; // Replace with your actual URL
+const baseUrl = 'https://byteblitz.vercel.app'; // Replace with your actual URL
 
 export const metadata: Metadata = {
-  title: 'Turkey Tokens',
-  description: 'A fast-paced browser game where you catch turkeys to collect tokens and advance through increasingly challenging levels!',
+  title: 'Byte Blitz',
+  description: 'A fast-paced browser game where you catch bytes to collect tokens and advance through increasingly challenging levels!',
   
   // Basic metadata
-  keywords: ['game', 'browser game', 'turkey game', 'arcade', 'next.js game'],
+  keywords: ['game', 'browser game', 'code game', 'arcade', 'next.js game'],
   authors: [{ name: 'KevIsDev' }],
   
   // Open Graph metadata
   openGraph: {
-    title: 'Turkey Tokens',
-    description: 'Catch turkeys, collect tokens, level up! Can you catch them all?',
+    title: 'Byte Blitz',
+    description: 'Catch bytes, collect tokens, level up! Can you catch them all?',
     url: baseUrl,
-    siteName: 'Turkey Tokens',
+    siteName: 'Byte Blitz',
     images: [
       {
         url: `${baseUrl}/screenshot.png`, // Replace with your actual image path
         width: 1200,
         height: 630,
-        alt: 'Turkey Tokens Screenshot',
+        alt: 'Byte Blitz Screenshot',
       }
     ],
     locale: 'en_US',
@@ -37,8 +37,8 @@ export const metadata: Metadata = {
   // Twitter specific metadata
   twitter: {
     card: 'summary_large_image',
-    title: 'Turkey Tokens',
-    description: 'Catch turkeys, collect tokens, level up! Can you catch them all?',
+    title: 'Byte Blitz',
+    description: 'Catch bytes, collect tokens, level up! Can you catch them all?',
     creator: '@KevIsDev', // Replace with your Twitter handle
     images: [`${baseUrl}/screenshot.png`], // Replace with your actual image path
   },

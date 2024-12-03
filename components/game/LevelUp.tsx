@@ -2,12 +2,12 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 
-interface LevelUpSpriteProps {
+interface LevelUpProps {
   show: boolean;
   level: number;
 }
 
-export function LevelUpSprite({ show, level }: LevelUpSpriteProps) {
+export function LevelUp({ show, level }: LevelUpProps) {
   return (
     <AnimatePresence>
       {show && (

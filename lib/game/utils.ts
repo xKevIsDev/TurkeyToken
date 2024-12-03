@@ -1,8 +1,8 @@
 "use client";
 
-import { TurkeySprite } from "./types";
+import { FragmentSprite } from "./types";
 
-export function generateTurkey(level: number = 1): TurkeySprite {
+export function generateFragment(level: number = 1): FragmentSprite {
   const id = Math.random().toString(36).substring(7);
   const side = Math.random() > 0.5 ? "left" : "right";
   

@@ -8,11 +8,12 @@ export interface Speed {
   y: number;
 }
 
-export interface TurkeySprite {
+export interface FragmentSprite {
   id: string;
   position: Position;
-  speed: Speed;
+  speed: Position;
   changeDirectionInterval: number;
+  iconType?: string;
 }
 
 export interface Character {

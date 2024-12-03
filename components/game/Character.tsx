@@ -56,9 +56,9 @@ export function Character({ character, onPositionUpdate }: CharacterProps) {
         }}
       >
         <img
-          src="/sprites/bolt.png"
+          src="/sprites/fragment.png"
           alt="Electric Character"
-          className="w-12 h-12 relative z-10"
+          className="w-16 h-16 relative z-10 scale-2"
           style={{
             transform: `scaleX(${character.targetPosition && character.targetPosition.x < character.position.x ? 1 : -1})`,
             filter: 'brightness(1.1) contrast(1.1)',

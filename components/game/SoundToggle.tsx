@@ -27,7 +27,7 @@ export function SoundToggle() {
   return (
     <button
       onClick={toggleMute}
-      className="fixed top-4 right-4 z-50 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+      className="fixed bottom-4 right-4 z-50 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
       aria-label={isMuted ? "Unmute" : "Mute"}
     >
       {isMuted ? (
