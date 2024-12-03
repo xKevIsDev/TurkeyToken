@@ -59,7 +59,7 @@ export function Game() {
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || isMobile) return;
     
     const gameContainer = gameContainerRef.current;
     if (!gameContainer) return;
@@ -77,13 +77,13 @@ export function Game() {
     };
 
     const handlePointerLockChange = () => {
-      if (document.pointerLockElement !== gameContainer) {
+      if (!isMobile && document.pointerLockElement !== gameContainer) {
         gameContainer.requestPointerLock();
       }
     };
 
     const handleClick = () => {
-      if (document.pointerLockElement !== gameContainer) {
+      if (!isMobile && document.pointerLockElement !== gameContainer) {
         gameContainer.requestPointerLock();
       }
     };
@@ -92,14 +92,16 @@ export function Game() {
     document.addEventListener('pointerlockchange', handlePointerLockChange);
     gameContainer.addEventListener('click', handleClick);
 
-    gameContainer.requestPointerLock();
+    if (!isMobile) {
+      gameContainer.requestPointerLock();
+    }
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('pointerlockchange', handlePointerLockChange);
       gameContainer.removeEventListener('click', handleClick);
     };
-  }, [mounted]);
+  }, [mounted, isMobile]);
 
   useEffect(() => {
     if (!mounted || isGameOver) return;
@@ -147,21 +149,35 @@ export function Game() {
     }));
   };
 
-  useEffect(() => {
-    if (!isMobile || !mounted) return;
+  const handleAnalogMove = useCallback((position: Position) => {
+    if (isMobile) {
+      const speed = 8; // Base speed
+      const speedMultiplier = gameState.level * 0.2; // Increases with level
+      const finalSpeed = speed + speedMultiplier;
 
-    const interval = setInterval(() => {
       setCharacter(prev => ({
         ...prev,
         position: {
-          x: Math.max(0, Math.min(window.innerWidth, prev.position.x + analogPosition.x)),
-          y: Math.max(0, Math.min(window.innerHeight, prev.position.y + analogPosition.y))
+          x: Math.max(0, Math.min(window.innerWidth, prev.position.x + (position.x * finalSpeed))),
+          y: Math.max(0, Math.min(window.innerHeight, prev.position.y + (position.y * finalSpeed)))
         }
       }));
-    }, 16);
+    }
+  }, [isMobile, gameState.level]);
 
-    return () => clearInterval(interval);
-  }, [mounted, isMobile, analogPosition]);
+  // Use requestAnimationFrame for smoother movement
+  useEffect(() => {
+    if (!isMobile || !analogPosition.x && !analogPosition.y) return;
+
+    let animationFrame: number;
+    const updatePosition = () => {
+      handleAnalogMove(analogPosition);
+      animationFrame = requestAnimationFrame(updatePosition);
+    };
+
+    animationFrame = requestAnimationFrame(updatePosition);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [isMobile, analogPosition, handleAnalogMove]);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -307,7 +323,12 @@ export function Game() {
         tabIndex={0}
       >
         {GameElements}
-        {isMobile && <AnalogStick onMove={setAnalogPosition} />}
+        {isMobile && (
+          <AnalogStick 
+            onMove={handleAnalogMove}
+            className="fixed bottom-16 left-8 z-50"
+          />
+        )}
       </div>
       
       <PauseMenu
