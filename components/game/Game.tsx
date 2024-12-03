@@ -151,7 +151,7 @@ export function Game() {
 
   const handleAnalogMove = useCallback((position: Position) => {
     if (isMobile) {
-      const baseSpeed = 1; // Reduced from 5
+      const baseSpeed = 3; // Reduced from 5
 
       setCharacter(prev => ({
         ...prev,
