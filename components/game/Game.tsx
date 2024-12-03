@@ -151,15 +151,13 @@ export function Game() {
 
   const handleAnalogMove = useCallback((position: Position) => {
     if (isMobile) {
-      const speed = 8; // Base speed
-      const speedMultiplier = gameState.level * 0.2; // Increases with level
-      const finalSpeed = speed + speedMultiplier;
+      const baseSpeed = 1; // Reduced from 5
 
       setCharacter(prev => ({
         ...prev,
         position: {
-          x: Math.max(0, Math.min(window.innerWidth, prev.position.x + (position.x * finalSpeed))),
-          y: Math.max(0, Math.min(window.innerHeight, prev.position.y + (position.y * finalSpeed)))
+          x: Math.max(0, Math.min(window.innerWidth, prev.position.x + (position.x * baseSpeed))),
+          y: Math.max(0, Math.min(window.innerHeight, prev.position.y + (position.y * baseSpeed)))
         }
       }));
     }

@@ -24,10 +24,19 @@ export function AnalogStick({ onMove, className = '' }: AnalogStickProps) {
 
     setPosition({ x: newX, y: newY });
 
-    const normalizedX = (newX / maxDistance);
-    const normalizedY = (newY / maxDistance);
+    const normalizeWithThreshold = (value: number) => {
+      const normalized = value / maxDistance;
+      const threshold = 0.3;
+      if (Math.abs(normalized) < threshold) {
+        return normalized * (1/threshold) * 0.5;
+      }
+      return Math.sign(normalized) * 0.5;
+    };
+
+    const normalizedX = normalizeWithThreshold(newX);
+    const normalizedY = normalizeWithThreshold(newY);
     
-    const curve = (x: number) => Math.sign(x) * Math.pow(Math.abs(x), 1.8);
+    const curve = (x: number) => Math.sign(x) * Math.pow(Math.abs(x), 1.1);
     
     onMove({ 
       x: curve(normalizedX),
@@ -74,7 +83,7 @@ export function AnalogStick({ onMove, className = '' }: AnalogStickProps) {
           top: -maxDistance,
           bottom: maxDistance,
         }}
-        dragElastic={0.1}
+        dragElastic={0}
         dragMomentum={false}
         onDrag={handleDrag}
         onDragStart={() => setIsDragging(true)}
@@ -89,9 +98,9 @@ export function AnalogStick({ onMove, className = '' }: AnalogStickProps) {
           scale: isDragging ? 1.2 : 1,
         }}
         transition={{
-          type: "spring",
-          stiffness: 1000,
-          damping: 50
+          type: "tween",
+          duration: 0.1,
+          ease: "linear"
         }}
       >
         {/* Glow effect */}
