@@ -77,13 +77,13 @@ export function Game() {
     };
 
     const handlePointerLockChange = () => {
-      if (!isMobile && document.pointerLockElement !== gameContainer) {
+      if (!isMobile && document.pointerLockElement !== gameContainer && !isGameOver) {
         gameContainer.requestPointerLock();
       }
     };
 
     const handleClick = () => {
-      if (!isMobile && document.pointerLockElement !== gameContainer) {
+      if (!isMobile && document.pointerLockElement !== gameContainer && !isGameOver) {
         gameContainer.requestPointerLock();
       }
     };
@@ -92,7 +92,7 @@ export function Game() {
     document.addEventListener('pointerlockchange', handlePointerLockChange);
     gameContainer.addEventListener('click', handleClick);
 
-    if (!isMobile) {
+    if (!isMobile && !isGameOver) {
       gameContainer.requestPointerLock();
     }
 
@@ -100,8 +100,12 @@ export function Game() {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('pointerlockchange', handlePointerLockChange);
       gameContainer.removeEventListener('click', handleClick);
+      
+      if (document.pointerLockElement === gameContainer) {
+        document.exitPointerLock();
+      }
     };
-  }, [mounted, isMobile]);
+  }, [mounted, isMobile, isGameOver]);
 
   useEffect(() => {
     if (!mounted || isGameOver) return;

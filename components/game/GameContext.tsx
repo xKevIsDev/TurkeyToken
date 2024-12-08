@@ -108,16 +108,22 @@ export function GameProvider({ children }: { children: ReactNode }) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          // Add CSRF token if you implement it
+          // 'X-CSRF-Token': getCsrfToken(),
         },
+        credentials: 'same-origin', // Important for security
         body: JSON.stringify({
           name: gameState.playerName,
           score: finalScore,
-          level: gameState.level
+          level: gameState.level,
+          // Add a timestamp for additional validation
+          timestamp: Date.now()
         }),
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to submit score: ${response.statusText}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(`Failed to submit score: ${errorData.error || response.statusText}`);
       }
 
       const data = await response.json();
@@ -127,7 +133,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       return data;
     } catch (error) {
       console.error('Error submitting final score:', error);
-      toast.error('Failed to submit final score');
+      toast.error('Failed to submit score. Please try again later.');
       throw error;
     }
   };

@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { supabaseAdmin } from '@/lib/supabase';
 import { z } from 'zod';
+import { validateScore } from '@/lib/middleware/validateScore';
+import { headers } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'edge';
@@ -13,9 +15,16 @@ const scoreSchema = z.object({
 
 export async function POST(request: Request) {
   try {
+    // Validate request origin
+    const headersList = headers();
+    const origin = headersList.get('origin');
+    if (!origin?.includes(process.env.NEXT_PUBLIC_APP_URL || '')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+
     // Validate Supabase connection
-    if (!supabase) {
-      console.error('Supabase client not initialized');
+    if (!supabaseAdmin) {
+      console.error('Supabase admin client not initialized');
       return NextResponse.json(
         { error: 'Database connection error' },
         { status: 500 }
@@ -35,8 +44,16 @@ export async function POST(request: Request) {
 
     const { name, score, level } = result.data;
 
+    // Validate score
+    if (!validateScore(score, level)) {
+      return NextResponse.json(
+        { error: 'Invalid score detected' },
+        { status: 400 }
+      );
+    }
+
     // Insert the new score
-    const { data: insertedData, error: insertError } = await supabase
+    const { data: insertedData, error: insertError } = await supabaseAdmin
       .from('leaderboard')
       .insert([{ name, score, level }])
       .select()
@@ -51,7 +68,7 @@ export async function POST(request: Request) {
     }
 
     // Get the rank
-    const { count: rankCount, error: rankError } = await supabase
+    const { count: rankCount, error: rankError } = await supabaseAdmin
       .from('leaderboard')
       .select('*', { count: 'exact', head: true })
       .gt('score', score);
@@ -75,9 +92,9 @@ export async function POST(request: Request) {
       timestamp: new Date(insertedData.created_at).getTime(),
     });
   } catch (error) {
-    console.error('Score submission error:', error);
+    console.error('Server error:', error);
     return NextResponse.json(
-      { error: 'Failed to submit score' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
@@ -86,15 +103,15 @@ export async function POST(request: Request) {
 export async function GET() {
   try {
     // Validate Supabase connection
-    if (!supabase) {
-      console.error('Supabase client not initialized');
+    if (!supabaseAdmin) {
+      console.error('Supabase admin client not initialized');
       return NextResponse.json(
         { error: 'Database connection error' },
         { status: 500 }
       );
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('leaderboard')
       .select('*')
       .order('score', { ascending: false })
